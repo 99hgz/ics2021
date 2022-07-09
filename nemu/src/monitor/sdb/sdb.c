@@ -38,7 +38,7 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
-  cpu_exec(args[0]);
+  cpu_exec(atoi(args));
   return 0;
 }
 
