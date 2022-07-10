@@ -7,7 +7,7 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
-
+  TK_NUMBER
   /* TODO: Add more token types */
 
 };
@@ -23,6 +23,12 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
+  {"-", '-'},
+  {"\\*", '*'},
+  {"\\/", '/'},
+  {"[0-9]+",TK_NUMBER},
+  {"\\(", '('},
+  {"\\)", ')'},
   {"==", TK_EQ},        // equal
 };
 
@@ -80,7 +86,14 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+          case TK_NOTYPE:
+            break;
+          default: 
+            tokens[++nr_token].type = rules[i].token_type;
+            strncpy(tokens[nr_token].str, e + position, substr_len);
+            if(substr_len>30)assert(0);
+            tokens[nr_token].str[substr_len]='\0';
+            break;
         }
 
         break;
@@ -96,6 +109,43 @@ static bool make_token(char *e) {
   return true;
 }
 
+int get_main_op(int p,int q){
+  int token_level=2,res=p;
+  int parentheses=0;
+  for(int i=p;i<=q;i++)
+    if(tokens[i].type=='+'||tokens[i].type=='-'){
+      if(parentheses==0)
+        token_level=1,res=i;
+    }else if(tokens[i].type=='*'||tokens[i].type=='/'){
+      if(parentheses==0&&token_level==2)
+        res=i;
+    }else if(tokens[i].type=='(')
+      parentheses++;
+    else if(tokens[i].type==')')
+      parentheses--;
+  return res;
+}
+
+uint32_t eval_expr(int p,int q){
+  if(p>q){
+    assert(0);
+  }else if(p==q){
+    return atoi(tokens[p].str);
+  }else if(check_parentheses(p,q)){
+    return eval_expr(p+1,q-1);
+  }else{
+    int op=get_main_op(p,q);
+    uint32_t val1=eval_expr(p,op-1);
+    uint32_t val2=eval_expr(op+1,q);
+    switch (tokens[op].type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      default: assert(0);
+    }
+  }
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -103,8 +153,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  eval_expr(1,nr_token);
 
   return 0;
 }
