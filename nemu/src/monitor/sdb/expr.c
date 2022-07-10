@@ -126,6 +126,19 @@ int get_main_op(int p,int q){
   return res;
 }
 
+bool check_parentheses(int p,int q){
+  int parentheses=0;
+  for(int i=p;i<=q;i++){
+    if(tokens[i].type=='(')
+      parentheses++;
+    else if(tokens[i].type==')')
+      parentheses--;
+    if(parentheses<0)return false;
+  }
+  if(parentheses==0&&tokens[p].type=='('&&tokens[q].type==')')return true;
+  return false;
+}
+
 uint32_t eval_expr(int p,int q){
   if(p>q){
     assert(0);
