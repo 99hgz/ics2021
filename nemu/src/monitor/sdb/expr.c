@@ -6,8 +6,8 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-  TK_NUMBER
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND,
+  TK_NUMBER, TK_REG, TK_HEXNUMBER
   /* TODO: Add more token types */
 
 };
@@ -26,10 +26,14 @@ static struct rule {
   {"-", '-'},
   {"\\*", '*'},
   {"\\/", '/'},
+  {"\\$[\\$a-z][\\$a-zA-Z0-9]+",TK_REG},
+  {"0x[0-9]+",TK_HEXNUMBER},
   {"[0-9]+",TK_NUMBER},
   {"\\(", '('},
   {"\\)", ')'},
   {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},        
+  {"&&", TK_AND},       
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -89,7 +93,7 @@ static bool make_token(char *e) {
           case TK_NOTYPE:
             break;
           default: 
-            tokens[++nr_token].type = rules[i].token_type;
+            tokens[nr_token++].type = rules[i].token_type;
             strncpy(tokens[nr_token].str, e + position, substr_len);
             if(substr_len>30)assert(0);
             tokens[nr_token].str[substr_len]='\0';
@@ -113,11 +117,14 @@ int get_main_op(int p,int q){
   int token_level=2,res=p;
   int parentheses=0;
   for(int i=p;i<=q;i++)
-    if(tokens[i].type=='+'||tokens[i].type=='-'){
-      if(parentheses==0)
+    if(tokens[i].type==TK_EQ||tokens[i].type==TK_NEQ||tokens[i].type==TK_AND){
+      if(parentheses==0&&token_level>=0)
+        token_level=0,res=i;
+    }else if(tokens[i].type=='+'||tokens[i].type=='-'){
+      if(parentheses==0&&token_level>=1)
         token_level=1,res=i;
     }else if(tokens[i].type=='*'||tokens[i].type=='/'){
-      if(parentheses==0&&token_level==2)
+      if(parentheses==0&&token_level>=2)
         res=i;
     }else if(tokens[i].type=='(')
       parentheses++;
@@ -139,11 +146,31 @@ bool check_parentheses(int p,int q){
   return false;
 }
 
+uint32_t htoi(char *e){
+  int pos=0;
+  uint32_t res=0;
+  while(e[pos]!='\0'){
+    uint32_t tmp=0;
+    if(e[pos]>='0'&&e[pos]<='9')tmp=e[pos]-'0'; else tmp=e[pos]-'a';
+    res=res*16+tmp;
+  }
+  return res;
+}
+
 uint32_t eval_expr(int p,int q){
   if(p>q){
     assert(0);
   }else if(p==q){
-    return atoi(tokens[p].str);
+    if(tokens[p].type==TK_NUMBER)
+      return atoi(tokens[p].str);
+    else if(tokens[p].type==TK_HEXNUMBER)
+      return htoi(tokens[p].str);
+    else if(tokens[p].type==TK_REG){
+      bool suc=false;
+      word_t res = isa_reg_str2val(tokens[p].str,&suc);
+      if(suc)return res;else assert(0);
+    } 
+    else assert(0);
   }else if(check_parentheses(p,q)){
     return eval_expr(p+1,q-1);
   }else{
@@ -155,6 +182,9 @@ uint32_t eval_expr(int p,int q){
       case '-': return val1 - val2;
       case '*': return val1 * val2;
       case '/': return val1 / val2;
+      case TK_EQ: return val1 == val2;
+      case TK_NEQ: return val1 != val2;
+      case TK_AND: return val1 && val2;
       default: assert(0);
     }
   }
@@ -166,7 +196,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  eval_expr(1,nr_token);
+  eval_expr(0,nr_token-1);
 
   return 0;
 }
