@@ -3,12 +3,14 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-#include "watchpoint.c"
 
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void show_wps();
+void delete_wp(int no);
+void new_wp(char *args);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -45,36 +47,20 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_w(char *args) {
-  WP *tmp = new_wp();
-  strcpy(tmp->cmd,args);
-  bool suc = false;
-  tmp->val = expr(tmp->cmd,&suc);
-  if(!suc)assert(0);
-  tmp->hit_times = 0;
+  new_wp(args);
   return 0;
 }
 
 static int cmd_info(char *args){
   if(args[0]=='w'){
-    WP *tmp = head;
-    while(tmp != NULL){
-      printf("breakpoint%d %s value=%d already hit %d time(s)",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
-      tmp = tmp->next;
-    }
+    show_wps();
   }
   return 0;
 }
 
 static int cmd_d(char *args){
   int no=atoi(args);
-  WP *tmp = head;
-  while(tmp != NULL){
-    if(tmp->NO==no){
-      free_wp(tmp);
-      Log("deleted breakpoint %d",no);
-      break;
-    }
-  }
+  delete_wp(no);
   return 0;
 }
 

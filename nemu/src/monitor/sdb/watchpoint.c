@@ -28,7 +28,7 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP* new_wp(){
+WP* new_(){
   if(free_==NULL)assert(0);
   WP *tmp = free_;
   free_=free_->next;
@@ -36,6 +36,22 @@ WP* new_wp(){
   head = tmp;
   return head;
 }
+void new_wp(char *args){
+  WP *tmp = new_();
+  strcpy(tmp->cmd,args);
+  bool suc = false;
+  tmp->val = expr(tmp->cmd,&suc);
+  if(!suc)assert(0);
+  tmp->hit_times = 0;
+}
+void show_wps(){
+  WP *tmp = head;
+  while(tmp != NULL){
+    printf("breakpoint%d %s value=%d already hit %d time(s)",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
+    tmp = tmp->next;
+  }
+}
+
 void free_wp(WP *wp){
   WP *tmp=head;
   while(tmp!=NULL&&tmp->next!=wp)
@@ -46,4 +62,14 @@ void free_wp(WP *wp){
     tmp->next=wp->next;
   wp->next=free_;
   free_=wp;
+}
+void delete_wp(int no){
+  WP *tmp = head;
+  while(tmp != NULL){
+    if(tmp->NO==no){
+      free_wp(tmp);
+      Log("deleted breakpoint %d",no);
+      break;
+    }
+  }
 }
