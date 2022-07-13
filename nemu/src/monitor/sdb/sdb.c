@@ -3,6 +3,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include "watchpoint.c"
 
 static int is_batch_mode = false;
 
@@ -43,6 +44,40 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_w(char *args) {
+  WP *tmp = new_wp();
+  strcpy(tmp->cmd,args);
+  bool suc = false;
+  tmp->val = expr(tmp->cmd,&suc);
+  if(!suc)assert(0);
+  tmp->hit_times = 0;
+  return 0;
+}
+
+static int cmd_info(char *args){
+  if(args[0]=='w'){
+    WP *tmp = head;
+    while(tmp != NULL){
+      printf("breakpoint%d %s value=%d already hit %d time(s)",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
+      tmp = tmp->next;
+    }
+  }
+  return 0;
+}
+
+static int cmd_d(char *args){
+  int no=atoi(args);
+  WP *tmp = head;
+  while(tmp != NULL){
+    if(tmp->NO==no){
+      free_wp(tmp);
+      Log("deleted breakpoint %d",no);
+      break;
+    }
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -54,6 +89,9 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Run the program for n steps", cmd_si },
+  { "watch", "Manage watchpoints", cmd_w },
+  { "info", "", cmd_info},
+  { "d", "Delete watchpoints", cmd_d},
 
   /* TODO: Add more commands */
 
