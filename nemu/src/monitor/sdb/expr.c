@@ -197,6 +197,6 @@ word_t expr(char *e, bool *success) {
   }
 
   eval_expr(0,nr_token-1);
-
+  *success = true;
   return 0;
 }

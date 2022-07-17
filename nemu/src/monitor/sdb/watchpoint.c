@@ -73,3 +73,19 @@ void delete_wp(int no){
     }
   }
 }
+
+int do_wp_check(){
+  WP *tmp=head;
+  int ret=0;
+  while(tmp!=NULL){
+    bool suc = true;
+    uint32_t val_ = expr(tmp->cmd,&suc);
+    if(!suc)assert(0);
+    if(val_!=tmp->val){
+      ret = -1;
+      printf("breakpoint %d old value=%d current value=%d",tmp->NO,tmp->val,val_);
+    }
+    tmp->val=val_;
+  }
+  return ret;
+}
