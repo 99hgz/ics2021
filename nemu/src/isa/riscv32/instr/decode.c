@@ -63,5 +63,3 @@ int isa_fetch_decode(Decode *s) {
   int idx = table_main(s);
   return idx;
 }
-
-//def_INSTR_IDTAB("0000000000000000 010 ??????????????? 01", U     , li);
