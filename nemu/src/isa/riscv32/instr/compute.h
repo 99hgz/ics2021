@@ -3,6 +3,19 @@
     rtl_##name(s, ddest, dsrc1, dsrc2); \
   }
 
+def_compute_ehelper(add)
+def_compute_ehelper(sub)
+def_compute_ehelper(and)
+def_compute_ehelper(or)
+def_compute_ehelper(xor)
+def_compute_ehelper(sll)
+def_compute_ehelper(srl)
+def_compute_ehelper(sra)
+
+def_EHelper(slt) {
+  rtl_li(s, ddest, interpret_relop(RELOP_LTU,*dsrc1,*dsrc2));
+}
+
 def_EHelper(lui) {
   rtl_li(s, ddest, id_src1->imm);
 }
