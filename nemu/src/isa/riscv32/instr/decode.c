@@ -85,5 +85,3 @@ int isa_fetch_decode(Decode *s) {
   int idx = table_main(s);
   return idx;
 }
-
-//
