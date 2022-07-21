@@ -38,3 +38,15 @@ def_EHelper(jalr) {
   rtl_addi(s, s0, dsrc1, id_src2->imm);
   rtl_jr(s, s0);
 }
+def_EHelper(bne) {
+  rtl_jrelop(s, RELOP_NE, dsrc1, dsrc2, id_dest->imm);
+}
+def_EHelper(beq) {
+  rtl_jrelop(s, RELOP_EQ, dsrc1, dsrc2, id_dest->imm);
+}
+def_EHelper(blt) {
+  rtl_jrelop(s, RELOP_LT, dsrc1, dsrc2, id_dest->imm);
+}
+def_EHelper(bge) {
+  rtl_jrelop(s, RELOP_GE, dsrc1, dsrc2, id_dest->imm);
+}
