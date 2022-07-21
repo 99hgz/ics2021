@@ -1,3 +1,8 @@
+#define def_compute_ehelper(name) \
+  def_EHelper(name) { \
+    rtl_##name(s, ddest, dsrc1, dsrc2); \
+  }
+
 def_EHelper(lui) {
   rtl_li(s, ddest, id_src1->imm);
 }
