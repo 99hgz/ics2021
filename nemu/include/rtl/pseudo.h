@@ -33,6 +33,7 @@ static inline def_rtl(sext, rtlreg_t* dest, const rtlreg_t* src1, int width) {
 static inline def_rtl(sextb, rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[width .. 0])
   *dest = (((*src1) >> width) & 1) ? (1<<31 | ((1<<31)-(1<<(width+1))))|(*src1) : (*src1);
+  //*dest = SEXT32(*src1,(width+1));
 }
 
 static inline def_rtl(zext, rtlreg_t* dest, const rtlreg_t* src1, int width) {

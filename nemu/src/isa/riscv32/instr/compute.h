@@ -11,10 +11,12 @@ def_EHelper(addi) {
   rtl_addi(s, ddest, dsrc1, id_src2->imm);
 }
 def_EHelper(jal) {
-  rtl_li(s, s0, 4);
-  rtl_add(s, ddest, &gpc, s0);
-  rtl_li(s, s0, id_src1->imm);
-  rtl_sextb(s, s0, s0, 20);
-  rtl_add(s, s1, &gpc, s0);
-  rtl_jr(s, s1);
+  rtl_addi(s, ddest, &gpc, 4);
+  rtl_addi(s, s0, &gpc, id_src1->imm);
+  rtl_jr(s, s0);
+}
+def_EHelper(jalr) {
+  rtl_addi(s, ddest, &gpc, 4);
+  rtl_addi(s, s0, dsrc1, id_src2->imm);
+  rtl_jr(s, s0);
 }

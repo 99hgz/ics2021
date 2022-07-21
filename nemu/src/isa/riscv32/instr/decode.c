@@ -24,7 +24,7 @@ static def_DopHelper(r) {
 
 static def_DHelper(I) {
   decode_op_r(s, id_src1, s->isa.instr.i.rs1, false);
-  decode_op_i(s, id_src2, s->isa.instr.i.simm11_0, false);
+  decode_op_i(s, id_src2, SEXT32(s->isa.instr.i.simm11_0,11), false);
   decode_op_r(s, id_dest, s->isa.instr.i.rd, true);
 }
 
@@ -35,19 +35,19 @@ static def_DHelper(U) {
 
 static def_DHelper(S) {
   decode_op_r(s, id_src1, s->isa.instr.s.rs1, false);
-  sword_t simm = (s->isa.instr.s.simm11_5 << 5) | s->isa.instr.s.imm4_0;
+  sword_t simm = SEXT32((s->isa.instr.s.simm11_5 << 5) | s->isa.instr.s.imm4_0,11);
   decode_op_i(s, id_src2, simm, false);
   decode_op_r(s, id_dest, s->isa.instr.s.rs2, false);
 }
 
 static def_DHelper(J) {
-  sword_t simm = (s->isa.instr.j.imm10_1 << 1) | (s->isa.instr.j.imm11 << 11) | (s->isa.instr.j.imm19_12 << 12) | (s->isa.instr.j.imm20 << 20);
+  sword_t simm = SEXT32((s->isa.instr.j.imm10_1 << 1) | (s->isa.instr.j.imm11 << 11) | (s->isa.instr.j.imm19_12 << 12) | (s->isa.instr.j.imm20 << 20),20);
   decode_op_i(s, id_src1, simm, false);
   decode_op_r(s, id_dest, s->isa.instr.j.rd, false);
 }
 
 static def_DHelper(CI) {
-  sword_t simm = (s->isa.instr.ci.imm5_5 << 5) | s->isa.instr.ci.imm4_0;
+  sword_t simm = SEXT32((s->isa.instr.ci.imm5_5 << 5) | s->isa.instr.ci.imm4_0,5);
   decode_op_i(s, id_src1, simm, false);
   decode_op_r(s, id_dest, s->isa.instr.ci.rd, false);
 }
@@ -75,7 +75,9 @@ def_THelper(main) {
   def_INSTR_IDTAB("??????? ????? ????? ??? ????? 01101 11", U     , lui);
   def_INSTR_IDTAB("??????? ????? ????? ??? ????? 00101 11", U     , auipc);
   def_INSTR_IDTAB("??????? ????? ????? ??? ????? 11011 11", J     , jal);
+  def_INSTR_IDTAB("??????? ????? ????? ??? ????? 11001 11", I     , jalr);
   def_INSTR_IDTAB("0000000000000000 010 ??????????? 01"   , CI    , li);
+  
   def_INSTR_TAB  ("??????? ????? ????? ??? ????? 11010 11",         nemu_trap);
   return table_inv(s);
 };
