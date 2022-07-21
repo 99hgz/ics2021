@@ -38,6 +38,14 @@ typedef struct {
       uint32_t imm31_12  :20;
     } u;
     struct {
+      uint32_t opcode    : 7;
+      uint32_t rd        : 5;
+      uint32_t imm19_12  : 8;
+      uint32_t imm11     : 1;
+      uint32_t imm10_1   : 10;
+      uint32_t imm20     : 1;
+    } j;
+    struct {
       uint32_t opcode  : 2;
       uint32_t imm4_0  : 5;
       uint32_t rd      : 5;
