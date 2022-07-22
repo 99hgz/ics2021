@@ -71,6 +71,7 @@ void delete_wp(int no){
       Log("deleted breakpoint %d",no);
       break;
     }
+    tmp = tmp -> next;
   }
 }
 
@@ -86,6 +87,7 @@ int do_wp_check(){
       printf("breakpoint %d old value=%d current value=%d",tmp->NO,tmp->val,val_);
     }
     tmp->val=val_;
+    tmp = tmp -> next;
   }
   return ret;
 }

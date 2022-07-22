@@ -197,7 +197,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  eval_expr(0,nr_token-1);
+  word_t res = eval_expr(0,nr_token-1);
   *success = true;
-  return 0;
+  return res;
 }
