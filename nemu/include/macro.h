@@ -72,6 +72,7 @@
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 #define SEXT(x, len) ({ struct { int64_t n : len; } __x = { .n = x }; (int64_t)__x.n; })
 #define SEXT32(x, len) ({ struct { int32_t n : len; } __x = { .n = x }; (int32_t)__x.n; })
+#define ZEXT32(x, len) ({ struct { uint32_t n : len; } __x = { .n = x }; (uint32_t)__x.n; })
 
 #define ROUNDUP(a, sz)   ((((uintptr_t)a) + (sz) - 1) & ~((sz) - 1))
 #define ROUNDDOWN(a, sz) ((((uintptr_t)a)) & ~((sz) - 1))

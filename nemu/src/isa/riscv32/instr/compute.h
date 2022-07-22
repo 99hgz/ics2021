@@ -2,6 +2,10 @@
   def_EHelper(name) { \
     rtl_##name(s, ddest, dsrc1, dsrc2); \
   }
+#define def_compute_ehelperi(name) \
+  def_EHelper(name##i) { \
+    rtl_##name##i(s, ddest, dsrc1, id_src2->imm); \
+  }
 
 def_compute_ehelper(add)
 def_compute_ehelper(sub)
@@ -12,8 +16,25 @@ def_compute_ehelper(sll)
 def_compute_ehelper(srl)
 def_compute_ehelper(sra)
 
+def_compute_ehelperi(add)
+def_compute_ehelperi(and)
+def_compute_ehelperi(or)
+def_compute_ehelperi(xor)
+def_compute_ehelperi(sll)
+def_compute_ehelperi(srl)
+def_compute_ehelperi(sra)
+
 def_EHelper(slt) {
+  rtl_li(s, ddest, interpret_relop(RELOP_LT,*dsrc1,*dsrc2));
+}
+def_EHelper(sltu) {
   rtl_li(s, ddest, interpret_relop(RELOP_LTU,*dsrc1,*dsrc2));
+}
+def_EHelper(slti) {
+  rtl_li(s, ddest, interpret_relop(RELOP_LT,*dsrc1,id_src2->imm));
+}
+def_EHelper(sltiu) {
+  rtl_li(s, ddest, interpret_relop(RELOP_LTU,*dsrc1,id_src2->imm));
 }
 
 def_EHelper(lui) {
@@ -24,9 +45,6 @@ def_EHelper(li) {
 }
 def_EHelper(auipc) {
   rtl_addi(s, ddest, &gpc, id_src1->imm);
-}
-def_EHelper(addi) {
-  rtl_addi(s, ddest, dsrc1, id_src2->imm);
 }
 def_EHelper(jal) {
   rtl_addi(s, ddest, &gpc, 4);
