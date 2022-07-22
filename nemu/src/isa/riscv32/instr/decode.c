@@ -24,17 +24,17 @@ static def_DopHelper(r) {
 
 static def_DHelper(I) {
   decode_op_r(s, id_src1, s->isa.instr.i.rs1, false);
-  decode_op_i(s, id_src2, SEXT32(s->isa.instr.i.simm11_0,11), false);
+  decode_op_i(s, id_src2, SEXT32(s->isa.instr.i.simm11_0,12), false);
   decode_op_r(s, id_dest, s->isa.instr.i.rd, true);
 }
 static def_DHelper(UI) {
   decode_op_r(s, id_src1, s->isa.instr.i.rs1, false);
-  decode_op_i(s, id_src2, ZEXT32(s->isa.instr.i.simm11_0,11), false);
+  decode_op_i(s, id_src2, ZEXT32(s->isa.instr.i.simm11_0,12), false);
   decode_op_r(s, id_dest, s->isa.instr.i.rd, true);
 }
 static def_DHelper(DI) {
   decode_op_r(s, id_src1, s->isa.instr.i.rs1, false);
-  uint32_t imm = ZEXT32(s->isa.instr.i.simm11_0,11) & 0xff;
+  uint32_t imm = ZEXT32(s->isa.instr.i.simm11_0,12) & 0xff;
   decode_op_i(s, id_src2, imm, false);
   decode_op_r(s, id_dest, s->isa.instr.i.rd, true);
 }
@@ -46,13 +46,13 @@ static def_DHelper(U) {
 
 static def_DHelper(S) {
   decode_op_r(s, id_src1, s->isa.instr.s.rs1, false);
-  sword_t simm = SEXT32((s->isa.instr.s.simm11_5 << 5) | s->isa.instr.s.imm4_0,11);
+  sword_t simm = SEXT32((s->isa.instr.s.simm11_5 << 5) | s->isa.instr.s.imm4_0,12);
   decode_op_i(s, id_src2, simm, false);
   decode_op_r(s, id_dest, s->isa.instr.s.rs2, true);
 }
 
 static def_DHelper(J) {
-  sword_t simm = SEXT32((s->isa.instr.j.imm10_1 << 1) | (s->isa.instr.j.imm11 << 11) | (s->isa.instr.j.imm19_12 << 12) | (s->isa.instr.j.imm20 << 20),20);
+  sword_t simm = SEXT32((s->isa.instr.j.imm10_1 << 1) | (s->isa.instr.j.imm11 << 11) | (s->isa.instr.j.imm19_12 << 12) | (s->isa.instr.j.imm20 << 20),21);
   decode_op_i(s, id_src1, simm, false);
   decode_op_r(s, id_dest, s->isa.instr.j.rd, true);
 }
