@@ -84,7 +84,8 @@ int do_wp_check(){
     if(!suc)assert(0);
     if(val_!=tmp->val){
       ret = -1;
-      printf("breakpoint %d old value=%d current value=%d",tmp->NO,tmp->val,val_);
+      tmp->hit_times++;
+      printf("breakpoint %d %s old value=%u current value=%u",tmp->NO,tmp->cmd,tmp->val,val_);
     }
     tmp->val=val_;
     tmp = tmp -> next;
