@@ -145,7 +145,6 @@ void sdb_mainloop() {
         break;
       }
     }
-    //isa_reg_display();
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
 }
