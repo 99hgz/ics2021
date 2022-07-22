@@ -104,7 +104,7 @@ void cpu_exec(uint64_t n) {
   for (;n > 0; n --) {
     fetch_decode_exec_updatepc(&s);
     g_nr_guest_instr ++;
-    printf("g_nr_guest_instr = %d\n",g_nr_guest_instr);
+    printf("g_nr_guest_instr = %ld\n",g_nr_guest_instr);
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
