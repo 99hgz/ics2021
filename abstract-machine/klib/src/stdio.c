@@ -13,12 +13,22 @@
 #define SMALL	32		/* use lowercase in hex (must be 32 == 0x20) */
 #define SPECIAL	64		/* prefix hex with "0x", octal with "0" */
 
-int printf(const char *fmt, ...) {
-  panic("Not implemented");
+int printf(const char *fmt, ...)
+{
+	char printf_buf[1024];
+	va_list args;
+	int printed;
+	va_start(args, fmt);
+	printed = vsprintf(printf_buf, fmt, args);
+	va_end(args);
+	putstr(printf_buf);
+	return printed;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
+  int i;
+  i = vsnprintf(out, INT_MAX, fmt, ap);
+  return i;
 }
 
 int sprintf(char *out, const char *fmt, ...)
