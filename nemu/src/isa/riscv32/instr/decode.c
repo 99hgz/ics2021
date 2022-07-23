@@ -15,11 +15,9 @@ static uint32_t get_instr(Decode *s) {
 static def_DopHelper(i) {
   op->imm = val;
 }
-static word_t zero_null = 0;
 static def_DopHelper(r) {
   bool is_write = flag;
-  //zero_null = 0;
-  //static word_t zero_null = 0;
+  static word_t zero_null = 0;
   op->preg = (is_write && val == 0) ? &zero_null : &gpr(val);
 }
 
@@ -49,7 +47,7 @@ static def_DHelper(S) {
   decode_op_r(s, id_src1, s->isa.instr.s.rs1, false);
   sword_t simm = SEXT32((s->isa.instr.s.simm11_5 << 5) | s->isa.instr.s.imm4_0,12);
   decode_op_i(s, id_src2, simm, false);
-  decode_op_r(s, id_dest, s->isa.instr.s.rs2, true);
+  decode_op_r(s, id_dest, s->isa.instr.s.rs2, false);
 }
 
 static def_DHelper(J) {
