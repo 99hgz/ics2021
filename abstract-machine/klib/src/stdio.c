@@ -162,7 +162,7 @@ int format_decode(const char *fmt, struct printf_spec *spec)
 	return ++fmt - start;
 }
 
-char *string(char *buf, char *end, const char *s, struct printf_spec spec)
+char *string(char *buf, const char *s, struct printf_spec spec)
 {
 	while (1) {
 		char c = *s++;
@@ -174,7 +174,7 @@ char *string(char *buf, char *end, const char *s, struct printf_spec spec)
 	return buf;
 }
 
-char *number(char *buf, char *end, unsigned long long num,
+char *number(char *buf, unsigned long long num,
 	     struct printf_spec spec)
 {
 	char tmp[3 * sizeof(num)];
@@ -210,10 +210,9 @@ char *number(char *buf, char *end, unsigned long long num,
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
 {
 	unsigned long long num;
-	char *str, *end;
+	char *str;
 	struct printf_spec spec = {0};
 	str = out;
-	end = out + n;
 
 	while (*fmt) {
 		const char *old_fmt = fmt;
@@ -222,16 +221,12 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
 		switch (spec.type) {
 		case FORMAT_TYPE_NONE: {
 			int copy = read;
-			if (str < end) {
-				if (copy > end - str)
-					copy = end - str;
-				memcpy(str, old_fmt, copy);
-			}
+			memcpy(str, old_fmt, copy);
 			str += read;
 			break;
 		}
 		case FORMAT_TYPE_STR:
-			str = string(str, end, va_arg(ap, char *), spec);
+			str = string(str, va_arg(ap, char *), spec);
 			break;
 		default:
 			switch (spec.type) {
@@ -239,7 +234,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
 				num = va_arg(ap, long long);
 				break;
 			case FORMAT_TYPE_ULONG:
-				num = va_arg(ap, unsigned long);
+				num = va_arg(ap, unsigned long); 
 				break;
 			case FORMAT_TYPE_LONG:
 				num = va_arg(ap, long);
@@ -262,17 +257,12 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap)
 			default:
 				num = va_arg(ap, unsigned int);
 			}
-			str = number(str, end, num, spec);
+			str = number(str, num, spec);
 		}
 	}
 	
-	if (n > 0) {
-		if (str < end)
-			*str = '\0';
-		else
-			end[-1] = '\0';
-	}
-	/* the trailing null byte doesn't count towards the total */
+	*str = '\0';
+
 	return str-out; 
 }
 
