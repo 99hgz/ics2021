@@ -15,10 +15,11 @@ static uint32_t get_instr(Decode *s) {
 static def_DopHelper(i) {
   op->imm = val;
 }
-static word_t zero_null = 0;
+//static word_t zero_null = 0;
 static def_DopHelper(r) {
   bool is_write = flag;
-  zero_null = 0;
+  //zero_null = 0;
+  static word_t zero_null = 0;
   op->preg = (is_write && val == 0) ? &zero_null : &gpr(val);
 }
 
