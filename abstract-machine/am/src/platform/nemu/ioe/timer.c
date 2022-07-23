@@ -1,5 +1,6 @@
 #include <am.h>
 #include <nemu.h>
+#include <stdio.h>
 static uint64_t uptime_t = 0;
 
 void __am_timer_init() {
@@ -10,6 +11,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   static uint64_t tmp_uptime_t = 0;
   tmp_uptime_t = ((uint64_t)inl(0xa0000048)<<32)|inl(0xa000004c);   
   uptime->us = tmp_uptime_t - uptime_t;
+  printf("%lu\n",uptime->us);
 } 
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
