@@ -31,7 +31,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   int res=do_wp_check();
   if(res==-1)
     nemu_state.state = NEMU_STOP;
-  isa_reg_display();
+  //isa_reg_display();
 }
 
 #include <isa-exec.h>
