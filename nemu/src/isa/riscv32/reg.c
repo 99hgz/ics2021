@@ -15,6 +15,13 @@ void isa_reg_display() {
   }
 }
 
+void ref_reg_display(CPU_state *ref){
+  for(int i=0;i<32;i++){
+    printf("r[%s]=%u ",regs[i],ref->gpr[i]._32);
+    if(i%8==7)printf("\n");
+  }
+}
+
 word_t isa_reg_str2val(const char *s, bool *success) {
   for(int i=0;i<32;i++)
     if(strcmp(s,regs[i])==0){
