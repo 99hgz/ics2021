@@ -87,7 +87,7 @@ def_EHelper(bne) {
 }
 def_EHelper(beq) {
   rtl_addi(s, s0, &gpc, id_dest->imm);
-  printf("%u\n",id_dest->imm);
+  printf("pc=0x%8x imm=%8x s0=%8x\n",gpc,id_dest->imm,*s0);
   rtl_jrelop(s, RELOP_EQ, dsrc1, dsrc2, *s0);
 }
 def_EHelper(blt) {
