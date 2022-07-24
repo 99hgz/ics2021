@@ -92,3 +92,19 @@ int do_wp_check(){
   }
   return ret;
 }
+char itrace_records[20][128];
+int itrace_cur = 0;
+void itrace_record(char *p){
+  memcpy(itrace_records[itrace_cur],p,strlen(p));
+  itrace_cur++;
+  if(itrace_cur>=20)itrace_cur=0;
+}
+void itrace_display(){
+  int tmp = itrace_cur;
+  do{
+    if(strlen(itrace_records[tmp])!=0)
+      printf("%s\n",itrace_records[tmp]);
+    tmp++;
+    if(tmp>=20)tmp=0;
+  }while(itrace_cur!=tmp);
+}
