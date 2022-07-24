@@ -60,7 +60,7 @@ void assert_fail_msg() {
   isa_reg_display();
   statistic();
 }
-
+void itrace_record(char *p);
 void fetch_decode(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
