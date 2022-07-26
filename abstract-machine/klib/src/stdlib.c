@@ -10,6 +10,7 @@ int rand(void) {
   next = next * 1103515245 + 12345;
   return (unsigned int)(next/65536) % 32768;
 }
+static char *hbrk = (void *)(&_heap_start);
 
 void srand(unsigned int seed) {
   next = seed;
@@ -34,7 +35,6 @@ void *malloc(size_t size) {
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  static char *hbrk = (void *)(&_heap_start);
   size  = (size_t)ROUNDUP(size, 8);
   char *old = hbrk;
   hbrk += size;
