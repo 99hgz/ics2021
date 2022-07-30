@@ -55,8 +55,9 @@ static void statistic() {
   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " instr/s", g_nr_guest_instr * 1000000 / g_timer);
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
-
+void itrace_display();
 void assert_fail_msg() {
+  itrace_display();
   isa_reg_display();
   statistic();
 }
