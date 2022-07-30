@@ -80,7 +80,7 @@ void itrace_display();
 void ref_reg_display(CPU_state *ref);
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
-  //printf("pc=%u refpc=%u\n",cpu.pc,ref->pc);
+  printf("pc=%u refpc=%u\n",cpu.pc,ref->pc);
   if (!isa_difftest_checkregs(ref, pc)) {
     nemu_state.state = NEMU_ABORT;
     nemu_state.halt_pc = pc;
