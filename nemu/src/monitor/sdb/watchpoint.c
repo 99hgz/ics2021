@@ -95,7 +95,7 @@ int do_wp_check(){
 char itrace_records[20][128];
 int itrace_cur = 0;
 void itrace_record(char *p){
-  memcpy(itrace_records[itrace_cur],p,strlen(p));
+  memcpy(itrace_records[itrace_cur],p,strlen(p)+1);
   itrace_cur++;
   if(itrace_cur>=20)itrace_cur=0;
 }
