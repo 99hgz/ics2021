@@ -15,7 +15,7 @@
 
 int printf(const char *fmt, ...)
 {
-	char printf_buf[1024];
+	char printf_buf[10240];
 	va_list args;
 	int printed;
 	va_start(args, fmt);
