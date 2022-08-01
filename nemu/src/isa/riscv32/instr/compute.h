@@ -142,3 +142,6 @@ def_EHelper(ecall) {
   isa_raise_intr(0,gpc);
   rtl_j(s, cpu.csr[0x305]._32);
 }
+def_EHelper(mret) {
+  rtl_j(s, cpu.csr[0x341]._32);
+}

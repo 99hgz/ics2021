@@ -157,7 +157,7 @@ def_THelper(branch) {
 
 def_THelper(csrf) {
   def_INSTR_TAB("0000000 00000 00000 000 00000 ????? ??", ecall);
-  //def_INSTR_TAB("0011000 00010 00000 000 00000 ????? ??", mret);
+  def_INSTR_TAB("0011000 00010 00000 000 00000 ????? ??", mret);
   return EXEC_ID_inv;
 }
 def_THelper(icsr) {
