@@ -143,5 +143,5 @@ def_EHelper(ecall) {
   rtl_j(s, cpu.csr[0x305]._32);
 }
 def_EHelper(mret) {
-  rtl_j(s, cpu.csr[0x341]._32);
+  rtl_j(s, cpu.csr[0x341]._32 + 4);
 }
