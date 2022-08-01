@@ -87,9 +87,7 @@ def_EHelper(bne) {
 }
 def_EHelper(beq) {
   rtl_addi(s, s0, &gpc, id_dest->imm);
-  //printf("pc=0x%8x imm=%8x s0=%8x\n",gpc,id_dest->imm,*s0);
   rtl_jrelop(s, RELOP_EQ, dsrc1, dsrc2, *s0);
-  //printf("judged dsrc1=%8x dsrc2=%8x dnpc=0x%8x\n",*dsrc1,*dsrc2,s->dnpc);
 }
 def_EHelper(blt) {
   rtl_addi(s, s0, &gpc, id_dest->imm);
@@ -106,4 +104,41 @@ def_EHelper(bltu) {
 def_EHelper(bgeu) {
   rtl_addi(s, s0, &gpc, id_dest->imm);
   rtl_jrelop(s, RELOP_GEU, dsrc1, dsrc2, *s0);
+}
+
+def_EHelper(csrrw) {
+  rtl_addi(s, s0, dsrc2, 0);
+  rtl_addi(s, dsrc2, dsrc1, 0);
+  rtl_addi(s, ddest, s0, 0);
+}
+def_EHelper(csrrs) {
+  rtl_addi(s, s0, dsrc2, 0);
+  rtl_or(s, dsrc2, dsrc1, s0);
+  rtl_addi(s, ddest, s0, 0);
+}
+def_EHelper(csrrc) {
+  rtl_addi(s, s0, dsrc2, 0);
+  rtl_li(s, dsrc2, (*dsrc2) & (~(*dsrc1)));
+  rtl_addi(s, ddest, s0, 0);
+}
+
+def_EHelper(csrrwi) {
+  rtl_addi(s, s0, dsrc2, 0);
+  rtl_li(s, dsrc2, id_src1->imm);
+  rtl_addi(s, ddest, s0, 0);
+}
+def_EHelper(csrrsi) {
+  rtl_addi(s, s0, dsrc2, 0);
+  rtl_ori(s, dsrc2, s0, id_src1->imm);
+  rtl_addi(s, ddest, s0, 0);
+}
+def_EHelper(csrrci) {
+  rtl_addi(s, s0, dsrc2, 0);
+  rtl_li(s, dsrc2, (*dsrc2) & (~(id_src1->imm)));
+  rtl_addi(s, ddest, s0, 0);
+}
+
+def_EHelper(ecall) {
+  isa_raise_intr(0,gpc);
+  rtl_j(s, cpu.csr[0x305]._32);
 }
