@@ -1,11 +1,12 @@
 #include <common.h>
 
 static Context* do_event(Event e, Context* c) {
-  printf("pc=%u cause=%u status=%u",c->mepc,c->mcause,c->mcause);
+  /*printf("pc=%u cause=%u status=%u",c->mepc,c->mcause,c->mcause);
   for(int i=0;i<32;i++)
     printf("%u ",c->gpr[i]);
-  printf("\n");
+  printf("\n");*/
   switch (e.event) {
+    case EVENT_YIELD: printf("Event yield\n");break;
     default: panic("Unhandled event ID = %d", e.event);
   }
 
