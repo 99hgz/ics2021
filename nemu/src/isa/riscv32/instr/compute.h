@@ -77,8 +77,9 @@ def_EHelper(jal) {
   rtl_jr(s, s0);
 }
 def_EHelper(jalr) {
-  rtl_addi(s, ddest, &gpc, 4);
+  rtl_addi(s, s1, &gpc, 4);
   rtl_addi(s, s0, dsrc1, id_src2->imm);
+  rtl_addi(s, ddest, s1, 0);
   rtl_jr(s, s0);
 }
 def_EHelper(bne) {
