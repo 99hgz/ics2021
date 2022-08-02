@@ -19,16 +19,18 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     assert(0);
   Elf32_Off prog_header_offset = elf_header.e_phoff;
   Elf32_Half prog_header_size = elf_header.e_phentsize;
+  //printf("%d\n",elf_header.e_phnum);
   uint32_t prog_idx = 0;
   while (prog_idx < elf_header.e_phnum){
     memset(&prog_header, 0, prog_header_size);
     ramdisk_read(&prog_header, prog_header_offset, prog_header_size);
     if (PT_LOAD == prog_header.p_type){
+      //printf("loadto %u\n",prog_header.p_vaddr);
       ramdisk_read((void *)prog_header.p_vaddr, prog_header.p_offset, prog_header.p_filesz);
       memset((void *)(prog_header.p_vaddr+prog_header.p_filesz), 0, prog_header.p_memsz-prog_header.p_filesz);
     }
-      prog_header_offset += elf_header.e_phentsize;
-      prog_idx++;
+    prog_header_offset += elf_header.e_phentsize;
+    prog_idx++;
   }
   return elf_header.e_entry;
 }
