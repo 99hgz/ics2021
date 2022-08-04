@@ -1,5 +1,5 @@
 #include "sdb.h"
-
+#include <isa.h>
 #define NR_WP 32
 
 typedef struct watchpoint {
@@ -74,7 +74,8 @@ void delete_wp(int no){
     tmp = tmp -> next;
   }
 }
-
+extern CPU_state cpu;
+void itrace_display();
 int do_wp_check(){
   WP *tmp=head;
   int ret=0;
@@ -85,7 +86,8 @@ int do_wp_check(){
     if(val_!=tmp->val){
       ret = -1;
       tmp->hit_times++;
-      printf("breakpoint %d %s old value=%u current value=%u",tmp->NO,tmp->cmd,tmp->val,val_);
+      printf("pc=0x%8x breakpoint %d %s old value=%u current value=%u",cpu.pc,tmp->NO,tmp->cmd,tmp->val,val_);
+      itrace_display();
     }
     tmp->val=val_;
     tmp = tmp -> next;
@@ -95,7 +97,7 @@ int do_wp_check(){
 char itrace_records[20][128];
 int itrace_cur = 0;
 void itrace_record(char *p){
-  memcpy(itrace_records[itrace_cur],p,strlen(p));
+  memcpy(itrace_records[itrace_cur],p,strlen(p)+1);
   itrace_cur++;
   if(itrace_cur>=20)itrace_cur=0;
 }
