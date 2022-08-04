@@ -141,8 +141,8 @@ def_EHelper(csrrci) {
 
 def_EHelper(ecall) {
   isa_raise_intr(gpr(17),gpc);
-  rtl_j(s, cpu.csr[0x305]._32);
+  rtl_j(s, ccsr[0x305]._32);
 }
 def_EHelper(mret) {
-  rtl_j(s, cpu.csr[0x341]._32 + 4);
+  rtl_j(s, ccsr[0x341]._32 + 4);
 }
