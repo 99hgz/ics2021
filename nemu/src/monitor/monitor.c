@@ -80,6 +80,7 @@ static int parse_args(int argc, char *argv[]) {
         exit(0);
     }
   }
+  optind = 0;
   return 0;
 }
 
