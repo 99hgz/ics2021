@@ -64,10 +64,13 @@ static int cmd_d(char *args){
   return 0;
 }
 
+void isa_reg_display();
 void itrace_display();
 static int cmd_trace(char *args){
   if(args[0]=='i')
     itrace_display();
+  else if(args[0]=='r')
+    isa_reg_display();
   return 0;
 }
 
