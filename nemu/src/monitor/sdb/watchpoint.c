@@ -47,7 +47,7 @@ void new_wp(char *args){
 void show_wps(){
   WP *tmp = head;
   while(tmp != NULL){
-    printf("breakpoint%d %s value=%u already hit %d time(s)",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
+    printf("breakpoint%d %s value=%u already hit %d time(s)\n",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
     tmp = tmp->next;
   }
 }
@@ -86,7 +86,7 @@ int do_wp_check(){
     if(val_!=tmp->val){
       ret = -1;
       tmp->hit_times++;
-      printf("pc=0x%8x breakpoint %d %s old value=%u current value=%u",cpu.pc,tmp->NO,tmp->cmd,tmp->val,val_);
+      printf("pc=0x%8x breakpoint %d %s old value=%u current value=%u\n",cpu.pc,tmp->NO,tmp->cmd,tmp->val,val_);
       itrace_display();
     }
     tmp->val=val_;
