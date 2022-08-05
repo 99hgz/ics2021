@@ -108,32 +108,38 @@ def_EHelper(bgeu) {
 }
 
 def_EHelper(csrrw) {
+  difftest_skip_ref();
   rtl_addi(s, s0, dsrc2, 0);
   rtl_addi(s, dsrc2, dsrc1, 0);
   rtl_addi(s, ddest, s0, 0);
 }
 def_EHelper(csrrs) {
+  difftest_skip_ref();
   rtl_addi(s, s0, dsrc2, 0);
   rtl_or(s, dsrc2, dsrc1, s0);
   rtl_addi(s, ddest, s0, 0);
 }
 def_EHelper(csrrc) {
+  difftest_skip_ref();
   rtl_addi(s, s0, dsrc2, 0);
   rtl_li(s, dsrc2, (*dsrc2) & (~(*dsrc1)));
   rtl_addi(s, ddest, s0, 0);
 }
 
 def_EHelper(csrrwi) {
+  difftest_skip_ref();
   rtl_addi(s, s0, dsrc2, 0);
   rtl_li(s, dsrc2, id_src1->imm);
   rtl_addi(s, ddest, s0, 0);
 }
 def_EHelper(csrrsi) {
+  difftest_skip_ref();
   rtl_addi(s, s0, dsrc2, 0);
   rtl_ori(s, dsrc2, s0, id_src1->imm);
   rtl_addi(s, ddest, s0, 0);
 }
 def_EHelper(csrrci) {
+  difftest_skip_ref();
   rtl_addi(s, s0, dsrc2, 0);
   rtl_li(s, dsrc2, (*dsrc2) & (~(id_src1->imm)));
   rtl_addi(s, ddest, s0, 0);
