@@ -146,9 +146,11 @@ def_EHelper(csrrci) {
 }
 
 def_EHelper(ecall) {
+  difftest_skip_ref();
   isa_raise_intr(gpr(17),gpc);
   rtl_j(s, ccsr[0x305]._32);
 }
 def_EHelper(mret) {
+  difftest_skip_ref();
   rtl_j(s, ccsr[0x341]._32 + 4);
 }
