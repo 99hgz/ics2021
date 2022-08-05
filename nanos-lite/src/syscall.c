@@ -24,6 +24,7 @@ void do_syscall(Context *c) {
   printf("do_syscall %d args=%d %d %d\n",a[0],a[1],a[2],a[3]);
   switch (a[0]) {
     case SYS_yield:yield();c->GPRx=0;break;
+    case SYS_brk:c->GPRx=0;break;
     case SYS_exit:halt(0);break;
     case SYS_write:c->GPRx=_write(a[1],(char *)a[2],a[3]);break;
     default: panic("Unhandled syscall ID = %d", a[0]);

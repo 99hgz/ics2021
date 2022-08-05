@@ -15,7 +15,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr elf_header;
   Elf_Phdr prog_header;
   ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
-  if (memcmp(elf_header.e_ident, "\177ELF\1\1\1", 7))
+  if (memcmp(elf_header.e_ident, "\177ELF", 4))
     assert(0);
   Elf32_Off prog_header_offset = elf_header.e_phoff;
   Elf32_Half prog_header_size = elf_header.e_phentsize;

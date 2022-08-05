@@ -65,8 +65,22 @@ int _write(int fd, void *buf, size_t count) {
   return 0;
 }
 
+extern char end;
+
 void *_sbrk(intptr_t increment) {
-  return (void *)-1;
+  static char *heap_end;
+	char        *prev_heap_end;
+
+	if (0 == heap_end) {
+		heap_end = &end;			
+	}
+
+	prev_heap_end  = heap_end;
+	heap_end      += increment;
+  int ret=_syscall_(SYS_brk, heap_end, 0, 0);
+	if(ret != 0) 
+		return (char*)-1;
+	return (void *) prev_heap_end;
 }
 
 int _read(int fd, void *buf, size_t count) {
