@@ -27,7 +27,7 @@ static struct rule {
   {"\\*", '*'},
   {"\\/", '/'},
   {"\\$[\\$a-z][\\$a-zA-Z0-9]+",TK_REG},
-  {"0x[0-9]+",TK_HEXNUMBER},
+  {"0x[a-fA-F0-9]+",TK_HEXNUMBER},
   {"[0-9]+",TK_NUMBER},
   {"\\(", '('},
   {"\\)", ')'},

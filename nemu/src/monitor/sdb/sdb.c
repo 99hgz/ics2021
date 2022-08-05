@@ -64,6 +64,13 @@ static int cmd_d(char *args){
   return 0;
 }
 
+void itrace_display();
+static int cmd_trace(char *args){
+  if(args[0]=='i')
+    itrace_display();
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -78,6 +85,7 @@ static struct {
   { "watch", "Manage watchpoints", cmd_w },
   { "info", "", cmd_info},
   { "d", "Delete watchpoints", cmd_d},
+  { "trace", "", cmd_trace}
 
   /* TODO: Add more commands */
 
