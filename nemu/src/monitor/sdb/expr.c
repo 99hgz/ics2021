@@ -163,7 +163,7 @@ uint32_t eval_expr(int p,int q){
     assert(0);
   }else if(p==q){
     if(tokens[p].type==TK_NUMBER)
-      return atoi(tokens[p].str);
+      return (uint32_t)atoi(tokens[p].str);
     else if(tokens[p].type==TK_HEXNUMBER)
       return htoi(tokens[p].str);
     else if(tokens[p].type==TK_REG){

@@ -47,7 +47,7 @@ void new_wp(char *args){
 void show_wps(){
   WP *tmp = head;
   while(tmp != NULL){
-    printf("breakpoint%d %s value=%d already hit %d time(s)",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
+    printf("breakpoint%d %s value=%u already hit %d time(s)",tmp->NO,tmp->cmd,tmp->val,tmp->hit_times);
     tmp = tmp->next;
   }
 }
