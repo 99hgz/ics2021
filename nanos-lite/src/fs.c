@@ -53,11 +53,20 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 size_t fs_write(int fd, const void *buf, size_t len){
-  if(file_table[fd].open_offset + len > file_table[fd].size)
-    len = file_table[fd].size - file_table[fd].open_offset;
-  size_t ret = ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
-  file_table[fd].open_offset += len;
-  return ret;
+  if(fd==1 || fd==2){
+    int cnt=0;
+    while((++cnt)<=len){
+      putch(*(char *)buf);
+      buf++;
+    }
+    return len;
+  }else{
+    if(file_table[fd].open_offset + len > file_table[fd].size)
+      len = file_table[fd].size - file_table[fd].open_offset;
+    size_t ret = ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    file_table[fd].open_offset += len;
+    return ret;
+  }
 }
 size_t fs_lseek(int fd, size_t offset, int whence){
   switch(whence){
