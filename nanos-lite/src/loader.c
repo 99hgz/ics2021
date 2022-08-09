@@ -14,6 +14,7 @@ int fs_open(const char *pathname, int flags, int mode);
 size_t fs_write(int fd, const void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 size_t fs_read(int fd, void *buf, size_t len);
+int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr elf_header;
@@ -39,6 +40,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     prog_header_offset += elf_header.e_phentsize;
     prog_idx++;
   }
+  fs_close(fd);
   return elf_header.e_entry;
 }
 
