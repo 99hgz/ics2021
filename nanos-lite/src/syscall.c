@@ -25,5 +25,5 @@ void do_syscall(Context *c) {
     case SYS_lseek:c->GPRx=fs_lseek(a[1],a[2],a[3]);break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
-  //printf("do_syscall %d args=%d %d %d return=%d\n",a[0],a[1],a[2],a[3],c->GPRx);
+  printf("do_syscall %d args=%d %d %d return=%d\n",a[0],a[1],a[2],a[3],c->GPRx);
 }
