@@ -8,7 +8,9 @@ size_t fs_lseek(int fd, size_t offset, int whence);
 size_t fs_read(int fd, void *buf, size_t len);
 int fs_close(int fd);
 int _gettimeofday(struct timeval *__restrict__ __tv, void *__restrict__ __tz){
-  io_read(AM_TIMER_RTC);
+  uint64_t tmp = io_read(AM_TIMER_UPTIME).us;
+  __tv->tv_sec = tmp / 1000000;
+  __tv->tv_usec = tmp % 1000000;
   return 0;
 }
 
