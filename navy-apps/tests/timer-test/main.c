@@ -7,4 +7,6 @@ int main()
     struct timeval tv;
     gettimeofday(&tv, NULL);
     printf("seconds since 00:00:00, 1 Jan 1970 UTC: %ld \n",  tv.tv_sec);
+    sleep(1500);
+    printf("seconds since 00:00:00, 1 Jan 1970 UTC: %ld \n",  tv.tv_sec);
 }
